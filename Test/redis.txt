@@ -1,0 +1,4 @@
+win+r cmd
+d:
+cd redis
+redis-server.exe  redis.windows.conf

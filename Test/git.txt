@@ -1,0 +1,24 @@
+Git
+
+git config  –global
+pwd                   显示当前的目录
+git init              把目录变成git可以管理的仓库
+git add 文件名        添加到暂存区
+git add .             将改动的地方添加到版本管理器
+git commit -m "内容"  文件提交到仓库
+git status            查看状态
+git diff 文件名       查看修改内容
+git log               查看日志
+git log --pretty=oneline    简化日志
+git reset --hard HEAD^      退回上版本（HEAD^^）上上版本
+git reset --hard HEAD~100   退回到前100版本
+cat 文件名            查看内容
+git reflog            获取版本号
+git checkout --文件名        丢弃工作区修改，把未添加到暂存区内容撤销
+git rm 文件名             删除文件
+git checkout --b 创建并切换分支，相当于git branch，git checkout
+git branch 查看分支
+
+
+git clone 地址             复制项目
+git push -u origin master  输入账号和密码
