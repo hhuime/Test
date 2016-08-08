@@ -11,6 +11,47 @@ class IndexController extends CommonController {
 		$this->display();
     }
 
+    public function test(){
+    	//$data = M('mytest')->where("id=1")->find();
+    	$data = M('mytest')->select();
+    	var_dump($data);
+
+    }
+
+    public function auth(){
+    	$id = 1;
+    	$rule_name = MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME;
+
+    	$auth = new \Think\Auth();
+    	$result = $auth->check($rule_name, $id); //验证权限
+    	if(!$result){
+    		echo "没有权限";
+    	}
+
+    	$users = $auth->getGroups($id); //获取用户所在用户组
+    	$user = $users[0];
+    	$user['rules'] = explode(',', $user['rules']);
+
+    	$data = M('auth_rule')->select(); //获取所有权限
+    	foreach($data as $key => $value){
+    		if(in_array($value['id'], $user['rules'])){
+    			$data[$key]['checked'] = 1;
+    		}
+    	}
+
+    	if(IS_POST){
+    		$post_rules = I('post.rules');
+    		$rules = implode(',', $post_rules);
+    		$update = M('auth_group')->where('id='.$id)->setField('rules', $rules);
+    		if($update)
+    			redirect(U('Home/index/auth'));
+    	}
+
+    	$this->assign('user', $user);
+    	$this->assign('data', $data);
+    	$this->display();
+    }
+
     public function rpc(){
     	vendor('Hprose.HproseHttpClient');
     	$client = new \HproseHttpClient('http://localhost/test/index.php/home/rpc');
@@ -58,8 +99,8 @@ class IndexController extends CommonController {
     }
 
     public function cookie(){
-    	cookie('abc', 233);
-    	cookie('123', 'aaaaa');
+    	//cookie('abc', 233);
+    	//cookie('123', 'aaaaa');
     	//$cookie = cookie('abc');
     	$cookie = $_COOKIE;
     	var_dump($cookie);

@@ -1,0 +1,10 @@
+<p>权限：{$user.title}</p>
+<form method="post" action="">
+<table>
+	<tr><td></td><td>权限名</td></tr>
+	<volist name="data" id="vo">
+	<tr><td><input type="checkbox" name="rules[]" value="{$vo.id}" <if condition="$vo.checked eq 1">checked="checked"</if> /></td><td>{$vo.title}</td></tr>
+	</volist>
+	<tr><td><input type="submit" /></td></tr>
+</table>
+</form>
