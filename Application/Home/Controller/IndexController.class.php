@@ -11,11 +11,48 @@ class IndexController extends CommonController {
 		$this->display();
     }
 
+    public function template(){
+        $content = $this->fetch('index/upload');
+        $this->show($content);
+    }
+
     public function test(){
-    	//$data = M('mytest')->where("id=1")->find();
+    	//$data = M('mytest')->where('id=1')->find();
     	$data = M('mytest')->select();
     	var_dump($data);
+    }
 
+    public function upload(){
+    	if(IS_POST){
+    		$code = I('post.verify');
+            $result = $this->check_verify($code);
+            if(!$result){
+                $this->error('验证码错误');
+                eixt;
+            }
+	    	$upload = new \Think\Upload();
+	    	$upload->maxSize  = 3145728 ; // 设置附件上传大小
+	    	$upload->exts     = array('jpg', 'gif', 'png', 'jpeg'); // 设置附件上传类型
+	    	$upload->savePath = './Uploads/'; // 设置附件上传目录
+
+		 	$info = $upload->uploadOne($_FILES['photo']);
+      	  	if(!$info){
+               	$this->error($upload->getError()); // 上传错误提示错误信息
+            }else{
+                echo $info['savepath'].$info['savename']; // 上传成功 获取上传文件信息
+         	}
+    	}
+    	$this->display();
+    }
+
+    public function verify(){
+    	$verify = new \Think\Verify();
+    	$verify->entry();
+    }
+
+    public function check_verify($code, $id = ''){
+        $verify = new \Think\Verify();
+        return $verify->check($code, $id);
     }
 
     public function auth(){
